@@ -1,0 +1,2 @@
+class MondaisController < ApplicationController
+end

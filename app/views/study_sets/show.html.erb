@@ -1,0 +1,40 @@
+<div data-controller="canvas">
+  <div data-canvas-target="mondais" class="hidden">
+    <% @study_set.mondais.each do |mondai| %>
+      <div data-yomikata="<%= mondai.yomikata %>" data-kanji="<%= mondai.kanji %>" class="mondai"></div>
+    <% end %>
+  </div>
+
+  <div>
+    <div class="h-[250px] relative mt-8 w-[90%] mx-auto rounded overflow-hidden border">
+      <div class="absolute z-10 w-full flex gap-8 p-2 border-b bg-accent text-accent-content">
+        <button data-action="click->canvas#undo" class="" title="undo">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+          </svg>
+        </button>
+        <button data-action="click->canvas#erase" class="" title="erase">
+          <svg width="24" height="24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+            <path d="M5.662 23l-5.369-5.365c-.195-.195-.293-.45-.293-.707 0-.256.098-.512.293-.707l14.929-14.928c.195-.194.451-.293.707-.293.255 0 .512.099.707.293l7.071 7.073c.196.195.293.451.293.708 0 .256-.097.511-.293.707l-11.216 11.219h5.514v2h-12.343zm3.657-2l-5.486-5.486-1.419 1.414 4.076 4.072h2.829zm6.605-17.581l-10.677 10.68 5.658 5.659 10.676-10.682-5.657-5.657z"/>
+          </svg>
+        </button>
+        <button data-action="click->canvas#setCurrentQuestion" class="text-accent-content underline absolute right-4" data-canvas-target="skipBtn">Skip Question</button>
+      </div>
+      <div class="absolute w-full flex justify-center">
+        <canvas id="can" height="250" width="500" class="rounded touch-none bg-base-100" style="cursor: crosshair;" data-canvas-target="canvas"></canvas>
+        <%= image_tag "maru", loading: "lazy", class: "absolute pointer-events-none select-none w-[96px] h-[84px] left-0 right-0 bottom-0 top-0 m-auto opacity-0 transition", data: {"canvas-target" => "maru"} %>
+        <%= image_tag "sankaku", loading: "lazy", class: "absolute pointer-events-none select-none w-[96px] h-[84px] left-0 right-0 bottom-0 top-0 m-auto opacity-0 transition", data: {"canvas-target" => "sankaku"} %>
+        <%= image_tag "batsu", loading: "lazy", class: "absolute pointer-events-none select-none w-[96px] h-[84px] left-0 right-0 bottom-0 top-0 m-auto opacity-0 transition", data: {"canvas-target" => "batsu"} %>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col items-left gap-4 m-[5%]">
+    <div data-canvas-target="currentQuestion" class="text-2xl"></div>
+    <div data-canvas-target="userAnswerDisplay" class="hidden text-2xl"></div>
+    <div data-canvas-target="actualAnswerDisplay" class="hidden text-2xl"></div>
+    <button data-action="click->canvas#recognize" class="btn btn-secondary text-secondary-content !w-full" data-canvas-target="checkBtn">Check</button>
+    <button data-action="click->canvas#setCurrentQuestion" class="btn btn-secondary text-secondary-content !w-full hidden" data-canvas-target="nextBtn">Next Question</button>
+    <div class="font-kanji text-[112px]">猫</div>
+  </div>
+</div>

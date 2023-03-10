@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html data-theme="light" class="bg-base-200">
+  <head>
+    <title>KanjiCampus</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
+
+  <body>
+    <%= render "shared/nav" %>
+    <turbo-frame id="flash">
+      <%= render "shared/flash" %>
+    </turbo-frame>
+    <%= yield %>
+  </body>
+</html>
