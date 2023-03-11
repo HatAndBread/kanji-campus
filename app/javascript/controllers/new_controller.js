@@ -22,6 +22,7 @@ export default class extends Controller {
     yomikata.value = "";
     kanji.value = "";
     this.mondaiTableTarget.appendChild(clone)
+    kanji.focus()
   }
 
   delete(e) {
