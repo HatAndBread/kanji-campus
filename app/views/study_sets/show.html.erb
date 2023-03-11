@@ -35,6 +35,7 @@
     <div data-canvas-target="actualAnswerDisplay" class="hidden text-2xl"></div>
     <button data-action="click->canvas#recognize" class="btn btn-secondary text-secondary-content !w-full" data-canvas-target="checkBtn">Check</button>
     <button data-action="click->canvas#setCurrentQuestion" class="btn btn-secondary text-secondary-content !w-full hidden" data-canvas-target="nextBtn">Next Question</button>
-    <div class="font-kanji text-[112px]">猫</div>
+    <div class="font-kanji text-[112px] flex gap-4 w-full max-w-[100vw] overflow-x-scroll" data-canvas-target="stroke"></div>
   </div>
+  <label for="nothing-modal" class="hidden" data-canvas-target="modal"></label>
 </div>

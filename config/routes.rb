@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   root "pages#home"
 
   resources :study_sets
+  get "/service-worker.js" => "service_worker#service_worker"
+  get "/manifest.json" => "service_worker#manifest"
 end

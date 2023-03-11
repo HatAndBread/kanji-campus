@@ -4,6 +4,7 @@ import CanvasController from "./canvas_controller";
 import FlashController from "./flash_controller";
 import NewController from "./new_controller";
 import handwriting from "../lib/handwriting";
+import loadKuroshiro from "../lib/load-kuroshiro";
 
 window.isDarkMode = () => document.getElementsByTagName("html")[0].dataset.theme === "dark";
 
@@ -17,5 +18,6 @@ application.register("new", NewController);
 application.debug = false
 window.Stimulus   = application
 
+loadKuroshiro();
 
 export { application }

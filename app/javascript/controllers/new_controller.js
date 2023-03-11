@@ -1,9 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 import max from "lodash.max";
+import debounce from "lodash.debounce";
 
 export default class extends Controller {
   static targets = ["mondai", "mondaiTable"]
-  connect() {
+
+  initialize() {
+    this.kanjiInput = debounce(this.kanjiInput, 400).bind(this);
   }
 
   newWord() {
@@ -24,5 +27,17 @@ export default class extends Controller {
   delete(e) {
     if (document.querySelectorAll(".mondai").length < 2) return;
     e.currentTarget.parentNode.parentNode.remove()
+  }
+
+  kanjiInput(e) {
+    if (!window.kuroshiroReady) return;
+
+    const {value, dataset, parentNode} = e.target;
+    if (Kuroshiro.default.Util.hasKanji(value)) {
+      kuroshiro.convert(value).then((res) => {
+        const yomikata = parentNode.parentNode.parentNode.querySelector(".yomikata")
+        yomikata.value = res;
+      })
+    }
   }
 }

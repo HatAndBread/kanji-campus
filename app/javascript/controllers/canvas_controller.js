@@ -6,11 +6,11 @@ import JSConfetti from 'js-confetti'
 
 
 const badConfetti = [["💩"], ["💀"], ["🤮"]]
-const goodConfetti = [["🌈", "🦄", "🌸", "❤️"], ["🌈"], ["🦄"], ["🌸"], "❤️"]
+const goodConfetti = [["🌈", "🦄", "🌸", "\u2764\ufe0f"], ["🌈"], ["🦄"], ["🌸"], "\u2764\ufe0f"]
 
 let listeners = [];
 export default class extends Controller {
-  static targets = ["canvas", "mondais", "currentQuestion", "userAnswerDisplay", "actualAnswerDisplay", "maru", "sankaku", "batsu", "checkBtn", "nextBtn", "skipBtn"];
+  static targets = ["canvas", "mondais", "currentQuestion", "userAnswerDisplay", "actualAnswerDisplay", "maru", "sankaku", "batsu", "checkBtn", "nextBtn", "skipBtn", "stroke", "modal"];
 
   connect() {
     this.jsConfetti = new JSConfetti()
@@ -26,6 +26,17 @@ export default class extends Controller {
       this.actualAnswerDisplayTarget.classList.remove("hidden");
       this.actualAnswerDisplayTarget.innerHTML = `Correct Answer: <strong>${this.answer}</strong>`;
       this.nextBtnTarget.classList.remove("hidden")
+      if (window.kuroshiroReady) {
+        this.answer.split("").forEach((char) => {
+          if (window.isKanji(char) || window.isKana(char)) {
+            const div = document.createElement("div")
+            div.innerText = char;
+            div.className = "border rounded bg-base-100 m-auto"
+            this.strokeTarget.appendChild(div);
+          }
+        });
+        this.strokeTarget.scrollIntoView(true);
+      }
       if (d[0] === this.answer) {
         this.maruTarget.classList.add("opacity-100")
         this.jsConfetti.addConfetti({
@@ -64,6 +75,7 @@ export default class extends Controller {
     if (this.canvas.trace.length) {
       this.canvas.recognize(this.canvas.trace);
     } else {
+      this.modalTarget.click();
     }
   }
 
@@ -82,6 +94,7 @@ export default class extends Controller {
     this.actualAnswerDisplayTarget.classList.add("hidden");
     this.nextBtnTarget.classList.add("hidden");
     this.checkBtnTarget.classList.remove("hidden")
+    this.strokeTarget.innerHTML = "";
   }
 
   setQuestions() {
