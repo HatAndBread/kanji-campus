@@ -8,7 +8,7 @@ const goodConfetti = [["🌈", "🦄", "🌸", "\u2764\ufe0f"], ["🌈"], ["🦄
 
 let listeners = [];
 export default class extends Controller {
-  static targets = ["canvas", "mondais", "currentQuestion", "userAnswerDisplay", "actualAnswerDisplay", "maru", "sankaku", "batsu", "checkBtn", "nextBtn", "skipBtn", "stroke", "modal", "loader"];
+  static targets = ["canvas", "mondais", "currentQuestion", "userAnswerDisplay", "maru", "sankaku", "batsu", "checkBtn", "nextBtn", "skipBtn", "stroke", "modal", "loader"];
 
   connect() {
     this.jsConfetti = new JSConfetti()
@@ -19,11 +19,9 @@ export default class extends Controller {
     this.canvas.setCallBack((d) => {
       this.canvas.set_Undo_Redo(false, false); // Clear stored steps
       this.canvas.set_Undo_Redo(true, false);
-      this.setAnswerDisplay(d[0]);
       this.checkBtnTarget.classList.add("hidden")
-      this.actualAnswerDisplayTarget.classList.remove("hidden");
       this.loaderTarget.classList.add("hidden");
-      this.actualAnswerDisplayTarget.innerHTML = `Correct Answer: <strong>${this.answer}</strong>`;
+      this.currentQuestionTarget.classList.add("hidden")
       this.nextBtnTarget.classList.remove("hidden")
       if (window.kuroshiroReady) {
         this.answer.split("").forEach((char) => {
@@ -38,13 +36,16 @@ export default class extends Controller {
       }
       if (d[0] === this.answer) {
         this.maruTarget.classList.add("opacity-100")
+        this.setAnswerDisplay(d[0], "🙆‍♀️✨");
         this.jsConfetti.addConfetti({
           emojis: sample(goodConfetti),
         })
       } else if (d.includes(this.answer)) {
         this.sankakuTarget.classList.add("opacity-100")
+        this.setAnswerDisplay(d[0], "🔺");
       } else {
         this.batsuTarget.classList.add("opacity-100")
+        this.setAnswerDisplay(d[0], "🙅‍♀️");
       }
       setTimeout(()=> {
         [this.maruTarget, this.sankakuTarget, this.batsuTarget].forEach((t) => t.classList.remove("opacity-100"))
@@ -87,10 +88,9 @@ export default class extends Controller {
     this.canvas.trace = [];
     this.erase();
     this.setAnswerDisplay()
-    this.actualAnswerDisplayTarget.innerText = "";
-    this.actualAnswerDisplayTarget.classList.add("hidden");
     this.nextBtnTarget.classList.add("hidden");
     this.checkBtnTarget.classList.remove("hidden")
+    this.currentQuestionTarget.classList.remove("hidden")
     this.strokeTarget.innerHTML = "";
     this.element.scrollIntoView(true)
   }
@@ -104,13 +104,13 @@ export default class extends Controller {
     }));
   }
 
-  setAnswerDisplay(text) {
+  setAnswerDisplay(text, emoji) {
     if (!text) {
       this.userAnswerDisplayTarget.innerText = "";
       this.userAnswerDisplayTarget.classList.add("hidden");
       return;
     }
-    this.userAnswerDisplayTarget.innerHTML = `It looks like you wrote: <strong>${text}</strong>`;
+    this.userAnswerDisplayTarget.innerHTML = `It looks like you wrote: <strong>${text}</strong>  ${emoji}`;
       this.userAnswerDisplayTarget.classList.remove("hidden");
   }
 
