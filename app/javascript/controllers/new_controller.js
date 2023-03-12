@@ -3,11 +3,23 @@ import max from "lodash.max";
 import debounce from "lodash.debounce";
 
 export default class extends Controller {
-  static targets = ["mondai", "mondaiTable"]
+  static targets = ["mondai", "mondaiTable", "import"]
 
   initialize() {
     this.kanjiInput = debounce(this.kanjiInput, 400).bind(this);
   }
+
+  connect() {
+    this.importArea = document.getElementById("import-area");
+    this.importBtn = document.getElementById("import-btn");
+    this.boundImport = this.import.bind(this)
+    this.importBtn.addEventListener("click", this.boundImport)
+  }
+
+  disconnect() {
+    this.importBtn.removeEventListener("click", this.boundImport)
+  }
+
 
   newWord() {
     const clone = this.mondaiTarget.cloneNode(true);
@@ -23,6 +35,7 @@ export default class extends Controller {
     kanji.value = "";
     this.mondaiTableTarget.appendChild(clone)
     kanji.focus()
+    return clone;
   }
 
   delete(e) {
@@ -33,12 +46,29 @@ export default class extends Controller {
   kanjiInput(e) {
     if (!window.kuroshiroReady) return;
 
-    const {value, dataset, parentNode} = e.target;
-    if (Kuroshiro.default.Util.hasKanji(value)) {
+    const {value, parentNode} = e.target;
+    if (window.hasKanji(value)) {
       kuroshiro.convert(value).then((res) => {
         const yomikata = parentNode.parentNode.parentNode.querySelector(".yomikata")
         yomikata.value = res;
       })
     }
+  }
+
+  import() {
+    if (!window.kuroshiroReady) return;
+
+    this.importArea.value.split(/\s|,|、/)
+      .forEach((value) => {
+        if (value && window.hasKanji(value)) {
+          const el = this.newWord()
+          const kanji = el.querySelector(".kanji")
+          kanji.value = value;
+          kuroshiro.convert(value).then((res) => {
+            const yomikata = el.querySelector(".yomikata")
+            yomikata.value = res;
+          })
+        }
+      });
   }
 }

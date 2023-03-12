@@ -1,5 +1,6 @@
+<h1 class="w-full text-center font-bold text-3xl mt-4"><%= method === :post ? "New Study Set" : "Editing #{study_set.name}" %></h1>
 <%= form_with model: study_set do |form| %>
-<div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 my-8" data-controller="new">
+<div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 mt-4 mb-8" data-controller="new">
   <div class="border rounded bg-base-100 px-4 py-5 sm:px-6">
     <div class="">
       <%= form.text_field :name, class: "input input-bordered w-full font-semibold text-base-300-content tracking-wide",
@@ -96,5 +97,7 @@
       </div>
     </div>
   </div>
+  <!-- The button to open modal -->
+  <label for="import-modal" class="link link-secondary">Import From List</label>
 </div>
 <% end %>
