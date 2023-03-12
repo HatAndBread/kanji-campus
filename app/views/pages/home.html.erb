@@ -1,6 +1,29 @@
 <div class="flex flex-col items-center gap-4 mt-4">
-  <h1 class="text-5xl font-semibold">Kanji Canvas</h1>
-  <%= image_tag "logo.png", loading: "lazy", alt: "logo", class: "rounded-full max-w-[300px] w-[40%]" %>
+  <h1 class="text-5xl font-bold">Kanji Canvas</h1>
+  <%= image_tag "logo.webp", alt: "logo", class: "rounded-full max-w-[200px] w-[40%]" %>
+</div>
+<div class="flex flex-col w-full items-center mt-8">
+  <ul class="menu bg-base-100 w-[90%] max-w-[300px] p-2 rounded-box">
+    <% if current_user %>
+      <li class="menu-title">
+        <span>My Study Sets</span>
+      </li>
+      <% @my_study_sets.each do |ss| %>
+        <li><%= link_to ss.name, study_set_path(ss), class: "link link-accent text-accent" %></li>
+      <% end %>
+    <% end %>
+    <div class="flex items-center">
+      <li class="menu-title">
+        <span><%= current_user ? "Standard Study Sets" : "Select a study set to begin" %></span>
+      </li>
+      <% unless current_user %>
+        <span>🚀</span>
+      <% end %>
+    </div>
+    <% @study_sets.each do |ss| %>
+      <li><%= link_to ss.name, study_set_path(ss), class: "link link-accent text-accent" %></li>
+    <% end %>
+  </ul>
 </div>
 <% unless current_user %>
   <div class="flex flex-col items-center gap-4 mt-4">

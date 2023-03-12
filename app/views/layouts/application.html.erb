@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <!-- Meta description for SEO -->
     <meta name="description" content="Practice writing kanji online - Japanese learning tool" />
-    <meta name="theme-color" content="#563FF8"/>
+    <meta name="theme-color" content="#317EFB"/>
 
     <!-- See Stackoverflow post about favicon dimensions: https://stackoverflow.com/a/23734416 -->
     <link rel="icon" type="image/png" href="./favicon-512x512.png" sizes="512x512">
@@ -31,12 +31,15 @@
     <link rel="manifest" crossorigin="use-credentials" href="/manifest.json" />
   </head>
 
-  <body>
-    <%= render "shared/nav" %>
+  <body class="">
+    <div style="min-height: 100vh;">
+      <%= render "shared/nav" %>
+      <%= yield %>
+    </div>
+    <%= render "shared/footer" %>
     <turbo-frame id="flash">
       <%= render "shared/flash" %>
     </turbo-frame>
-    <%= yield %>
     <%= render "shared/modals" %>
   </body>
 </html>
