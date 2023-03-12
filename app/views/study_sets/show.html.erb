@@ -1,11 +1,14 @@
-<div data-controller="canvas">
+<div data-controller="canvas" class="min-h-screen">
   <div data-canvas-target="mondais" class="hidden">
     <% @study_set.mondais.each do |mondai| %>
       <div data-yomikata="<%= mondai.yomikata %>" data-kanji="<%= mondai.kanji %>" class="mondai"></div>
     <% end %>
   </div>
+  <div class="fixed flex items-center justify-center top-0 left-0 w-screen h-screen bg-slate-800 opacity-50 z-50 hidden" data-canvas-target="loader">
+    <div class="loader"></div>
+  </div>
 
-  <div>
+  <div id="canvas-wrapper">
     <div class="h-[250px] relative mt-8 w-[90%] mx-auto rounded overflow-hidden border">
       <div class="absolute z-10 w-full flex gap-8 p-2 border-b bg-accent text-accent-content">
         <button data-action="click->canvas#undo" class="" title="undo">

@@ -4,13 +4,11 @@ import sample from "lodash.sample";
 import debounce from "lodash.debounce";
 import JSConfetti from 'js-confetti'
 
-
-const badConfetti = [["💩"], ["💀"], ["🤮"]]
 const goodConfetti = [["🌈", "🦄", "🌸", "\u2764\ufe0f"], ["🌈"], ["🦄"], ["🌸"], "\u2764\ufe0f"]
 
 let listeners = [];
 export default class extends Controller {
-  static targets = ["canvas", "mondais", "currentQuestion", "userAnswerDisplay", "actualAnswerDisplay", "maru", "sankaku", "batsu", "checkBtn", "nextBtn", "skipBtn", "stroke", "modal"];
+  static targets = ["canvas", "mondais", "currentQuestion", "userAnswerDisplay", "actualAnswerDisplay", "maru", "sankaku", "batsu", "checkBtn", "nextBtn", "skipBtn", "stroke", "modal", "loader"];
 
   connect() {
     this.jsConfetti = new JSConfetti()
@@ -24,6 +22,7 @@ export default class extends Controller {
       this.setAnswerDisplay(d[0]);
       this.checkBtnTarget.classList.add("hidden")
       this.actualAnswerDisplayTarget.classList.remove("hidden");
+      this.loaderTarget.classList.add("hidden");
       this.actualAnswerDisplayTarget.innerHTML = `Correct Answer: <strong>${this.answer}</strong>`;
       this.nextBtnTarget.classList.remove("hidden")
       if (window.kuroshiroReady) {
@@ -35,7 +34,7 @@ export default class extends Controller {
             this.strokeTarget.appendChild(div);
           }
         });
-        this.strokeTarget.scrollIntoView(true);
+        this.element.scrollIntoView();
       }
       if (d[0] === this.answer) {
         this.maruTarget.classList.add("opacity-100")
@@ -46,9 +45,6 @@ export default class extends Controller {
         this.sankakuTarget.classList.add("opacity-100")
       } else {
         this.batsuTarget.classList.add("opacity-100")
-        this.jsConfetti.addConfetti({
-          emojis: sample(badConfetti),
-        })
       }
       setTimeout(()=> {
         [this.maruTarget, this.sankakuTarget, this.batsuTarget].forEach((t) => t.classList.remove("opacity-100"))
@@ -74,6 +70,7 @@ export default class extends Controller {
   recognize() {
     if (this.canvas.trace.length) {
       this.canvas.recognize(this.canvas.trace);
+      this.loaderTarget.classList.remove("hidden");
     } else {
       this.modalTarget.click();
     }
@@ -95,6 +92,7 @@ export default class extends Controller {
     this.nextBtnTarget.classList.add("hidden");
     this.checkBtnTarget.classList.remove("hidden")
     this.strokeTarget.innerHTML = "";
+    this.element.scrollIntoView(true)
   }
 
   setQuestions() {
