@@ -1,24 +1,25 @@
 const CACHE_NAME = "cache-v1";
 
 const FILES_TO_CACHE = [
-  "./manifest.json",
-  "./favicon-16x16.png",
-  "./favicon-32x32.png",
-  "./favicon-128x128.png",
-  "./favicon-192x192.png",
-  "./favicon-512x512.png",
-  "./dict/base.dat.gz",
-  "./dict/cc.dat.gz",
-  "./dict/check.dat.gz",
-  "./dict/tid_map.dat.gz",
-  "./dict/tid_pos.dat.gz",
-  "./dict/tid.dat.gz",
-  "./dict/unk_char.dat.gz",
-  "./dict/unk_compat.dat.gz",
-  "./dict/unk_invoke.dat.gz",
-  "./dict/unk_map.dat.gz",
-  "./dict/unk_pos.dat.gz",
-  "./dict/unk.dat.gz",
+  "manifest.json",
+  "icons/favicon-16x16.png",
+  "icons/favicon-32x32.png",
+  "icons/favicon-128x128.png",
+  "icons/favicon-192x192.png",
+  "icons/favicon-512x512.png",
+  "dict/base.dat.gz",
+  "dict/cc.dat.gz",
+  "dict/check.dat.gz",
+  "dict/tid_map.dat.gz",
+  "dict/tid_pos.dat.gz",
+  "dict/tid.dat.gz",
+  "dict/unk_char.dat.gz",
+  "dict/unk_compat.dat.gz",
+  "dict/unk_invoke.dat.gz",
+  "dict/unk_map.dat.gz",
+  "dict/unk_pos.dat.gz",
+  "dict/unk.dat.gz",
+  "kanji.ttf"
 ];
 
 self.addEventListener("install", async () => {

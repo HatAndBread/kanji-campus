@@ -1,8 +1,8 @@
 // Register the service worker if available
-if ("serviceWorker" in navigator && window.location.pathname === "/") {
+if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register("./service-worker.js")
+      .register("/service-worker.js")
       .then((reg) => {
       })
       .catch((err) =>
