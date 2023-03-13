@@ -19,6 +19,7 @@ const FILES_TO_CACHE = [
   "dict/unk_map.dat.gz",
   "dict/unk_pos.dat.gz",
   "dict/unk.dat.gz",
+  "dict/ja-en.json.gz",
   "kanji.ttf"
 ];
 

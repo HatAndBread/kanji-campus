@@ -5,6 +5,7 @@ import FlashController from "./flash_controller";
 import NewController from "./new_controller";
 import handwriting from "../lib/handwriting";
 import loadKuroshiro from "../lib/load-kuroshiro";
+import { createDict } from "../lib/ja-en";
 
 window.isDarkMode = () => document.getElementsByTagName("html")[0].dataset.theme === "dark";
 
@@ -19,5 +20,6 @@ application.debug = false
 window.Stimulus   = application
 
 loadKuroshiro();
+createDict();
 
 export { application }

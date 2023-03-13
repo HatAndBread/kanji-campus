@@ -50,6 +50,10 @@ export default class extends Controller {
     if (window.hasKanji(value)) {
       kuroshiro.convert(value).then((res) => {
         const yomikata = parentNode.parentNode.parentNode.querySelector(".yomikata")
+        if (window.lookup) {
+          const english = window.lookup(value)
+          if (english) res += ` [${english}]`
+        }
         yomikata.value = res;
       })
     }
@@ -66,9 +70,14 @@ export default class extends Controller {
           kanji.value = value;
           kuroshiro.convert(value).then((res) => {
             const yomikata = el.querySelector(".yomikata")
+            if (window.lookup) {
+              const english = window.lookup(value)
+              if (english) res += ` [${english}]`
+            }
             yomikata.value = res;
           })
         }
       });
+    this.importArea.value = "";
   }
 }
