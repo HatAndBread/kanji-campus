@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
   def home
-    @study_sets = StudySet.where(public: true)
+    @study_sets = StudySet.where(public: true).order(name: :desc)
     @my_study_sets = StudySet.where(user: current_user) if current_user
   end
 
