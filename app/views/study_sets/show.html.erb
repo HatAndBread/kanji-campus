@@ -9,7 +9,7 @@
   </div>
 
   <div id="canvas-wrapper">
-    <div class="h-[250px] relative mt-8 w-[90%] mx-auto rounded overflow-hidden border">
+    <div class="h-[250px] relative mt-8 w-[90%] mx-auto rounded overflow-hidden border border-gray-500">
       <div class="absolute z-10 w-full flex gap-8 p-2 border-b bg-accent text-accent-content">
         <button data-action="click->canvas#undo" class="" title="undo">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
@@ -38,6 +38,11 @@
     <div data-canvas-target="userAnswerDisplay" class="hidden text-2xl"></div>
     <button data-action="click->canvas#recognize" class="btn btn-secondary text-secondary-content !w-full" data-canvas-target="checkBtn">Check</button>
     <button data-action="click->canvas#setCurrentQuestion" class="btn btn-secondary text-secondary-content !w-full hidden" data-canvas-target="nextBtn">Next Question</button>
+    <div class="w-full bg-base-300 rounded p-2">
+      <div>Accuracy: <span data-canvas-target="correctNum">0</span> out of <span data-canvas-target="totalNum">0</span></div>
+      <div>Percentage: <span data-canvas-target="percentage">100%</span></div>
+      <progress class="progress progress-success w-full" value="100" max="100" data-canvas-target="progress"></progress>
+    </div>
   </div>
   <label for="nothing-modal" class="hidden" data-canvas-target="modal"></label>
 </div>
