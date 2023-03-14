@@ -1,9 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
-import max from "lodash.max";
 import debounce from "lodash.debounce";
 
 export default class extends Controller {
-  static targets = ["mondai", "mondaiTable", "import"]
+  static targets = ["mondai", "mondaiTable", "import", "loader"]
 
   initialize() {
     this.kanjiInput = debounce(this.kanjiInput, 400).bind(this);
@@ -23,14 +22,8 @@ export default class extends Controller {
 
   newWord() {
     const clone = this.mondaiTarget.cloneNode(true);
-    const mondaiCount = max(Array.from(document.querySelectorAll(".mondai")).map((el) => parseInt(el.dataset.id))) + 1
-    clone.dataset.id = mondaiCount;
     const kanji = clone.querySelector(".kanji")
     const yomikata = clone.querySelector(".yomikata")
-    yomikata.name = yomikata.name.replace(/\[0\]/, `[${mondaiCount}]`)
-    yomikata.id = yomikata.id.replace(/0_yomikata/, `${mondaiCount}_yomikata`)
-    kanji.name = kanji.name.replace(/\[0\]/, `[${mondaiCount}]`)
-    kanji.id = kanji.id.replace(/0_kanji/, `${mondaiCount}_kanji`)
     yomikata.value = "";
     kanji.value = "";
     this.mondaiTableTarget.appendChild(clone)
@@ -44,40 +37,82 @@ export default class extends Controller {
   }
 
   kanjiInput(e) {
-    if (!window.kuroshiroReady) return;
+    if (!window.kuroshiroReady || !window.db) {
+      // show error message
+      return
+    };
 
     const {value, parentNode} = e.target;
     if (window.hasKanji(value)) {
       kuroshiro.convert(value).then((res) => {
         const yomikata = parentNode.parentNode.parentNode.querySelector(".yomikata")
-        if (window.lookup) {
-          const english = window.lookup(value)
+        window.lookup(value).then((english) => {
           if (english) res += ` [${english}]`
-        }
-        yomikata.value = res;
+          yomikata.value = res;
+        })
       })
     }
   }
 
   import() {
-    if (!window.kuroshiroReady) return;
+    if (!window.kuroshiroReady || !window.db) {
+      return;
+    }
 
-    this.importArea.value.split(/\s|,|、/)
-      .forEach((value) => {
-        if (value && window.hasKanji(value)) {
-          const el = this.newWord()
-          const kanji = el.querySelector(".kanji")
-          kanji.value = value;
-          kuroshiro.convert(value).then((res) => {
-            const yomikata = el.querySelector(".yomikata")
-            if (window.lookup) {
-              const english = window.lookup(value)
-              if (english) res += ` [${english}]`
-            }
-            yomikata.value = res;
-          })
-        }
+    this.loaderTarget.classList.remove("hidden")
+    setTimeout(() => {
+      this._import().then(() => {
+        this.loaderTarget.classList.add("hidden")
       });
+    }, 160);
+  }
+
+  parseData (string) {
+    return new Promise((resolve) => {
+      const worker = new Worker(`${window.location.origin}/dict-worker.js`);
+      worker.onmessage = (message) => {
+        resolve(message);
+      }
+      worker.postMessage(string);
+    })
+  }
+
+  _import () {
+    return new Promise(async (resolve) => {
+      const potentialWords = this.importArea.value.split(/\s|,|、/)
+        .filter((c) => c && window.hasKanji(c));
+      for (let i = 0; i < potentialWords.length; i++) {
+        const value = potentialWords[i];
+        const el = this.newWord();
+        const kanji = el.querySelector(".kanji");
+        kanji.value = value;
+        kuroshiro.convert(value).then((res) => {
+          const yomikata = el.querySelector(".yomikata");
+          if (res) {
+            window.lookup(value).then((english) => {
+              if (english) res += ` [${english}]`
+              yomikata.value = res;
+              if (i + 1 === potentialWords.length) resolve(true);
+            })
+          } else {
+            if (i + 1 === potentialWords.length) resolve(true);
+          }
+        })
+      }
     this.importArea.value = "";
+    })
+  }
+
+  handleSubmit(e) {
+    Array.from(this.mondaiTableTarget.children).forEach((el, i) => {
+      const kanji = el.querySelector(".kanji")
+      const yomikata = el.querySelector(".yomikata")
+      if (!kanji || !yomikata) return;
+
+      yomikata.name = yomikata.name.replace(/\[[0-9]+\]/, `[${i}]`)
+      yomikata.id = yomikata.id.replace(/[0-9]+_yomikata/, `${i}_yomikata`)
+      kanji.name = kanji.name.replace(/\[[0-9]+\]/, `[${i}]`)
+      kanji.id = kanji.id.replace(/[0-9]+_kanji/, `${i}_kanji`)
+    });
   }
 }

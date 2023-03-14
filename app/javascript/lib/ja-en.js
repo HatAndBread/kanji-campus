@@ -1,8 +1,24 @@
 import {inflate} from "pako"
+import Dexie from "dexie";
 import axios from "axios";
 const url = "/dict/ja-en.json.gz"
 
-let words;
+const db = new Dexie("kanji")
+
+
+db.version(1).stores({
+  kanji: "++id,kanji,english"
+});
+
+const parseData = (string) => {
+  return new Promise((resolve) => {
+    const worker = new Worker(`${window.location.origin}/dict-worker.js`);
+    worker.onmessage = (message) => {
+      resolve(message);
+    }
+    worker.postMessage(string);
+  })
+}
 
 export const createDict = async () => {
   const { data } = await axios.get(url, {
@@ -10,22 +26,24 @@ export const createDict = async () => {
     decompress: true,
   });
   const string = inflate(data, { to: 'string' });
-  const json = JSON.parse(string)
-  words = json.words
+  const result = await parseData(string);
+  db.kanji.bulkPut(result.data).then(() => {
+    console.log("Kanji db ready")
+    window.db = db;
+  })
 }
 
-window.lookup = (word) => {
-  if (!words) {
-    console.warn("Attempted to use dictionary before loaded.")
-    return;
-  }
 
-  let english;
-  for (let i = 0; i < words.length; i++) {
-    if (words[i].kanji[0]?.text === word) {
-      english =  words[i].sense[0]?.gloss[0]?.text;
-      break;
-    }
-  }
-  return english;
+window.bulkLookup = (arrayOfKanji) => {
+  return new Promise((resolve) => {
+    db.kanji.where("kanji")
+      .anyOf(arrayOfKanji)
+      .toArray()
+      .then((res) => resolve(res))
+  })
+}
+
+window.lookup = async (kanji) => {
+  const result = await db.kanji.get({kanji})
+  return result?.english
 }
