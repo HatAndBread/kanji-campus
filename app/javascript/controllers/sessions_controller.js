@@ -6,6 +6,8 @@ export default class extends Controller {
 
   connect() {
     this.chartData = JSON.parse(this.element.dataset.data);
+    Chart.defaults.color = window.isDarkMode() ? "white" : "#313641"
+    Chart.defaults.borderColor = window.isDarkMode() ? "rgb(125, 125, 125)" : "rgb(200,200,200)"
     const data = {
       labels: this.chartData.map((d) =>
         new Date(d.created * 1000).toDateString()
