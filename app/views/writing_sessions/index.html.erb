@@ -1,0 +1,7 @@
+<h1 class="text-3xl font-bold text-center"> <%= @study_set.name %> </h1>
+<div data-controller="sessions" class="flex flex-col items-center" data-data="<%= @writing_sessions.map {|ws| {created: ws.created_at.to_i, percentage: ((ws.correct / ws.answered.to_f) * 100).round(2).to_s }}.to_json %>">
+  <canvas id="chart" data-sessions-target="chartCanvas">
+
+  </canvas>
+
+</div>

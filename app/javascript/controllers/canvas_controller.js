@@ -8,7 +8,7 @@ const goodConfetti = [["🌈", "🦄", "🌸"], ["🌈"], ["🦄"], ["🌸"]]
 
 let listeners = []
 export default class extends Controller {
-  static targets = ["canvas", "mondais", "currentQuestion", "userAnswerDisplay", "maru", "sankaku", "batsu", "checkBtn", "nextBtn", "skipBtn", "stroke", "modal", "loader", "correctNum", "totalNum", "percentage", "progress"]
+  static targets = ["form", "formAnswered", "formCorrect", "canvas", "mondais", "currentQuestion", "userAnswerDisplay", "maru", "sankaku", "batsu", "checkBtn", "nextBtn", "skipBtn", "stroke", "modal", "loader", "correctNum", "totalNum", "percentage", "progress"]
 
   connect() {
     this.jsConfetti = new JSConfetti()
@@ -143,5 +143,19 @@ export default class extends Controller {
     if (window.innerHeight < 500) {
       this.element.scrollIntoView(true)
     }
+  }
+
+  submitResult() {
+    const confirmed = confirm("Are you sure you want to end this session?")
+    if (!confirmed) return;
+
+    if (!this.element.dataset.loggedIn || !this.questionNumber) {
+      window.location.assign("/");
+      return;
+    }
+
+    this.formCorrectTarget.value = this.correctlyAnswered
+    this.formAnsweredTarget.value = this.questionNumber
+    this.formTarget.submit()
   }
 }

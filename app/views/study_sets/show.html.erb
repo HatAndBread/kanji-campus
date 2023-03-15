@@ -1,4 +1,4 @@
-<div data-controller="canvas" class="min-h-screen">
+<div data-controller="canvas" class="min-h-screen" data-logged-in="<%= current_user ? "1" : "" %>">
   <div data-canvas-target="mondais" class="hidden">
     <% @study_set.mondais.each do |mondai| %>
       <div data-yomikata="<%= mondai.yomikata %>" data-kanji="<%= mondai.kanji %>" class="mondai"></div>
@@ -9,7 +9,7 @@
   </div>
 
   <div id="canvas-wrapper">
-    <div class="h-[250px] relative mt-8 w-[90%] mx-auto rounded overflow-hidden border border-gray-500">
+    <div class="h-[250px] relative mt-8 w-[90%] max-w-[800px] mx-auto rounded overflow-hidden border border-gray-500">
       <div class="absolute z-10 w-full flex gap-8 p-2 border-b bg-accent text-accent-content">
         <button data-action="click->canvas#undo" class="" title="undo">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-6 h-6">
@@ -32,17 +32,28 @@
     </div>
   </div>
 
-  <div class="flex flex-col items-left gap-4 mx-[5%] mb-16 mt-8">
+  <div class="flex flex-col items-left gap-4 w-[90%] max-w-[800px] mx-auto mb-16 mt-8">
     <div class="font-kanji text-[112px] flex gap-4 w-full max-w-[100vw] overflow-x-scroll" data-canvas-target="stroke"></div>
     <div data-canvas-target="currentQuestion" class="text-2xl"></div>
     <div data-canvas-target="userAnswerDisplay" class="hidden text-2xl"></div>
     <button data-action="click->canvas#recognize" class="btn btn-secondary text-secondary-content !w-full" data-canvas-target="checkBtn">Check</button>
     <button data-action="click->canvas#setCurrentQuestion" class="btn btn-secondary text-secondary-content !w-full hidden" data-canvas-target="nextBtn">Next Question</button>
-    <div class="w-full bg-base-300 rounded p-2">
-      <div>Accuracy: <span data-canvas-target="correctNum">0</span> out of <span data-canvas-target="totalNum">0</span></div>
-      <div>Percentage: <span data-canvas-target="percentage">100%</span></div>
+    <div class="w-full bg-base-300 rounded p-2 mt-6">
+      <div class="font-semibold">Accuracy: <span data-canvas-target="correctNum">0</span> out of <span data-canvas-target="totalNum">0</span></div>
+      <div class="font-semibold">Percentage: <span data-canvas-target="percentage">--%</span></div>
       <progress class="progress progress-success w-full" value="100" max="100" data-canvas-target="progress"></progress>
+      <button class="btn btn-warning !w-full mt-8" data-canvas-target="nextBtn" data-action="click->canvas#submitResult">End Practice
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+        </svg>
+      </button>
     </div>
   </div>
   <label for="nothing-modal" class="hidden" data-canvas-target="modal"></label>
+  <% if current_user %>
+    <%= form_with model: @writing_session, data: {canvas_target: "form"}, class: "hidden" do |form| %>
+      <%= form.number_field :answered, data: {canvas_target: "formAnswered"} %>
+      <%= form.number_field :correct, data: {canvas_target: "formCorrect"} %>
+    <% end %>
+  <% end %>
 </div>

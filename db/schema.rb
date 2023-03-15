@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_11_214946) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_14_221840) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -44,6 +44,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_11_214946) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "writing_sessions", force: :cascade do |t|
+    t.bigint "study_set_id", null: false
+    t.bigint "user_id", null: false
+    t.integer "answered", default: 0
+    t.integer "correct", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["study_set_id"], name: "index_writing_sessions_on_study_set_id"
+    t.index ["user_id"], name: "index_writing_sessions_on_user_id"
+  end
+
   add_foreign_key "mondais", "study_sets"
   add_foreign_key "study_sets", "users"
+  add_foreign_key "writing_sessions", "study_sets"
+  add_foreign_key "writing_sessions", "users"
 end

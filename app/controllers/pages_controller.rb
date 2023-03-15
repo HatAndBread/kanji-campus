@@ -6,4 +6,9 @@ class PagesController < ApplicationController
 
   def privacy_policy
   end
+
+  def menu
+    @study_sets = StudySet.where(public: true).order(name: :desc)
+    @my_study_sets = StudySet.where(user: current_user) if current_user
+  end
 end

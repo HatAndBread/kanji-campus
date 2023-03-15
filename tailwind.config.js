@@ -7,7 +7,7 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      'kanji': ['kanji']
+      'kanji': ['kanji', 'mono']
     }
   },
   plugins: [require("daisyui")] }

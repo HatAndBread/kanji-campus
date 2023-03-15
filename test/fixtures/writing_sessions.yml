@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  study_set: one
+  user: one
+  answered: 1
+  correct: 1
+
+two:
+  study_set: two
+  user: two
+  answered: 1
+  correct: 1

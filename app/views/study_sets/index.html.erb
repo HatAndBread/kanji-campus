@@ -1,12 +1,13 @@
-<div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 my-8">
-  <div class="border rounded bg-base-300 px-4 py-5 sm:px-6">
+
+<h1 class="text-3xl font-bold mt-8 text-center">My Study Sets</h1>
+<div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 mb-8">
+  <div class="px-4 py-5 sm:px-6">
     <div class="px-4 py-5 sm:px-6">
-      <h3 class="text-base font-semibold leading-6">My Study Sets</h3>
     </div>
-    <div class="overflow-hidden rounded-md border border-gray-300">
-      <ul role="list" class="divide-y divide-gray-300">
+    <div class="overflow-hidden rounded-md border border-base-300">
+      <ul role="list" class="divide-y divide-base-300">
         <% @study_sets.each do |ss| %>
-          <li class="px-6 py-4 bg-base-100 hover:bg-base-200 flex justify-between">
+          <li class="px-6 py-4 bg-base-100 hover:bg-base-200 flex justify-between transition">
             <%= link_to ss.name, study_set_path(ss.id), class: "link link-accent"%>
             <div class="flex gap-6">
               <%= link_to edit_study_set_path(ss) do %>

@@ -20,7 +20,10 @@ const FILES_TO_CACHE = [
   "dict/unk_pos.dat.gz",
   "dict/unk.dat.gz",
   "dict/ja-en.json.gz",
-  "kanji.ttf"
+  "kanji.ttf",
+  "kuroshiro.js",
+  "kuroshiro-analyzer.js",
+  "dict-worker.js",
 ];
 
 self.addEventListener("install", async () => {

@@ -1,0 +1,37 @@
+<div class="flex flex-col items-center gap-4 my-8">
+  <h1 class="text-3xl font-bold">Select A Study Set</h1>
+  <% if current_user %>
+    <div class="overflow-x-auto w-[90%] max-w-[800px] border border-base-300 rounded-lg">
+      <table class="table w-full">
+        <thead class="">
+          <tr>
+            <th>My Study Sets</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @my_study_sets.each do |ss| %>
+            <tr>
+              <td><%= link_to ss.name.truncate(30), study_set_path(ss), class: "link link-accent text-accent" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+  <div class="overflow-x-auto w-[90%] max-w-[800px] border border-base-300 rounded-lg mb-8">
+    <table class="table table-zebra w-full">
+      <thead>
+        <tr>
+          <th><%= current_user ? "Standard Study Sets" : "Select a study set to begin" %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @study_sets.each do |ss| %>
+          <tr>
+            <td><%= link_to ss.name.truncate(30), study_set_path(ss), class: "link link-accent text-accent" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
