@@ -7,6 +7,7 @@
 @font-face {
   font-family: 'kanji';
   src: url('kanji.ttf');
+  font-display: swap;
 }
 /* 
    Add the following markup AFTER your import statements
