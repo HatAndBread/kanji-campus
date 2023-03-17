@@ -37,7 +37,7 @@ export default class extends Controller {
   }
 
   kanjiInput(e) {
-    if (!window.kuroshiroReady || !window.db) {
+    if (!window.kuroshiroReady) {
       // show error message
       return
     };
@@ -55,7 +55,7 @@ export default class extends Controller {
   }
 
   import() {
-    if (!window.kuroshiroReady || !window.db) {
+    if (!window.kuroshiroReady) {
       return;
     }
 
@@ -81,6 +81,7 @@ export default class extends Controller {
     return new Promise(async (resolve) => {
       const potentialWords = this.importArea.value.split(/\s|,|、/)
         .filter((c) => c && window.hasKanji(c));
+      const dict = await window.bulkLookup(potentialWords);
       for (let i = 0; i < potentialWords.length; i++) {
         const value = potentialWords[i];
         const el = this.newWord();
@@ -89,11 +90,10 @@ export default class extends Controller {
         kuroshiro.convert(value).then((res) => {
           const yomikata = el.querySelector(".yomikata");
           if (res) {
-            window.lookup(value).then((english) => {
-              if (english) res += ` [${english}]`
-              yomikata.value = res;
-              if (i + 1 === potentialWords.length) resolve(true);
-            })
+            const english = dict[value]
+            if (english) res += ` [${english}]`
+            yomikata.value = res;
+            if (i + 1 === potentialWords.length) resolve(true);
           } else {
             if (i + 1 === potentialWords.length) resolve(true);
           }

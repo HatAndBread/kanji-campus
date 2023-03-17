@@ -10,7 +10,7 @@ export default class extends Controller {
     Chart.defaults.borderColor = window.isDarkMode() ? "rgb(125, 125, 125)" : "rgb(200,200,200)"
     const data = {
       labels: this.chartData.map((d) =>
-        new Date(d.created * 1000).toDateString()
+        new Date(d.created * 1000).toDateString().slice(4)
       ),
       datasets: [
         {

@@ -6,9 +6,10 @@ import JSConfetti from 'js-confetti'
 
 const goodConfetti = [["🌈", "🦄", "🌸"], ["🌈"], ["🦄"], ["🌸"]]
 
+const LIMIT = 10
 let listeners = []
 export default class extends Controller {
-  static targets = ["form", "formAnswered", "formCorrect", "canvas", "mondais", "currentQuestion", "userAnswerDisplay", "maru", "sankaku", "batsu", "checkBtn", "nextBtn", "skipBtn", "stroke", "modal", "loader", "correctNum", "totalNum", "percentage", "progress"]
+  static targets = ["form", "formAnswered", "formCorrect", "canvas", "mondais", "currentQuestion", "userAnswerDisplay", "maru", "sankaku", "batsu", "checkBtn", "nextBtn", "saveBtn", "skipBtn", "stroke", "modal", "loader", "currentNum", "percentage", "progress", "markCorrect"]
 
   connect() {
     this.jsConfetti = new JSConfetti()
@@ -16,7 +17,7 @@ export default class extends Controller {
     this.ctx = this.canvas.cxt
     this.setOptions()
     this.canvas.set_Undo_Redo(true, false)
-    this.questionNumber = 0
+    this.questionNumber = 1
     this.correctlyAnswered = 0
     this.canvas.setCallBack((d) => {
       this.questionNumber += 1;
@@ -25,7 +26,12 @@ export default class extends Controller {
       this.checkBtnTarget.classList.add("hidden")
       this.loaderTarget.classList.add("hidden")
       this.currentQuestionTarget.classList.add("hidden")
-      this.nextBtnTarget.classList.remove("hidden")
+      if (this.questionNumber > LIMIT) {
+        this.saveBtnTarget.classList.remove("hidden");
+
+      } else {
+        this.nextBtnTarget.classList.remove("hidden")
+      }
       if (window.kuroshiroReady) {
         this.answer.split("").forEach((char) => {
           if (window.isKanji(char) || window.isKana(char)) {
@@ -46,10 +52,12 @@ export default class extends Controller {
         })
       } else if (d.includes(this.answer)) {
         this.sankakuTarget.classList.add("opacity-100")
-        this.setAnswerDisplay(d[0], "🔺")
+        this.setAnswerDisplay(d[0], "🤷‍♀️")
+        this.markCorrectTarget.classList.remove("hidden")
       } else {
         this.batsuTarget.classList.add("opacity-100")
         this.setAnswerDisplay(d[0], "🙅‍♀️")
+        this.markCorrectTarget.classList.remove("hidden")
       }
       this.updateQuestionNumber()
       setTimeout(()=> {
@@ -98,6 +106,7 @@ export default class extends Controller {
     this.currentQuestionTarget.classList.remove("hidden")
     this.strokeTarget.innerHTML = ""
     this.scroll()
+    this.currentNumTarget.innerText = this.questionNumber
   }
 
   setQuestions() {
@@ -113,16 +122,15 @@ export default class extends Controller {
     if (!text) {
       this.userAnswerDisplayTarget.innerText = ""
       this.userAnswerDisplayTarget.classList.add("hidden")
+      this.markCorrectTarget.classList.add("hidden")
       return
     }
     this.userAnswerDisplayTarget.innerHTML = `It looks like you wrote: <strong>${text}</strong>  ${emoji}`
-      this.userAnswerDisplayTarget.classList.remove("hidden")
+    this.userAnswerDisplayTarget.classList.remove("hidden")
   }
 
   updateQuestionNumber() {
-    this.totalNumTarget.innerText = this.questionNumber
-    this.correctNumTarget.innerText = this.correctlyAnswered
-    const percentage = (this.correctlyAnswered / this.questionNumber) * 100
+    const percentage = (this.correctlyAnswered / (this.questionNumber - 1)) * 100
     this.percentageTarget.innerText = `${(percentage).toFixed(1)}%`
     this.progressTarget.value = Math.round(percentage)
   }
@@ -140,22 +148,27 @@ export default class extends Controller {
   }
 
   scroll() {
-    if (window.innerHeight < 500) {
-      this.element.scrollIntoView(true)
-    }
+    document.getElementById("anchor").scrollIntoView(true)
   }
 
   submitResult() {
-    const confirmed = confirm("Are you sure you want to end this session?")
-    if (!confirmed) return;
-
-    if (!this.element.dataset.loggedIn || !this.questionNumber) {
+    if (!this.element.dataset.loggedIn) {
       window.location.assign("/");
       return;
     }
 
     this.formCorrectTarget.value = this.correctlyAnswered
-    this.formAnsweredTarget.value = this.questionNumber
+    this.formAnsweredTarget.value = LIMIT;
     this.formTarget.submit()
+  }
+
+  markCorrect() {
+    this.correctlyAnswered += 1
+    this.updateQuestionNumber()
+    this.jsConfetti.addConfetti({
+      emojis: sample(goodConfetti),
+    })
+    this.userAnswerDisplayTarget.classList.add("hidden")
+    this.markCorrectTarget.classList.add("hidden")
   }
 }

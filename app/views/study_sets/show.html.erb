@@ -1,3 +1,4 @@
+<div id="anchor"></div>
 <div data-controller="canvas" class="min-h-screen" data-logged-in="<%= current_user ? "1" : "" %>">
   <div data-canvas-target="mondais" class="hidden">
     <% @study_set.mondais.each do |mondai| %>
@@ -35,18 +36,21 @@
   <div class="flex flex-col items-left gap-4 w-[90%] max-w-[800px] mx-auto mb-16 mt-8">
     <div class="font-kanji text-[112px] flex gap-4 w-full max-w-[100vw] overflow-x-scroll" data-canvas-target="stroke"></div>
     <div data-canvas-target="currentQuestion" class="text-2xl"></div>
-    <div data-canvas-target="userAnswerDisplay" class="hidden text-2xl"></div>
+    <div class="flex justify-between">
+      <div data-canvas-target="userAnswerDisplay" class="hidden text-2xl"></div>
+      <button class="link link-secondary" data-canvas-target="markCorrect" data-action="click->canvas#markCorrect">Mark as correct</button>
+    </div>
     <button data-action="click->canvas#recognize" class="btn btn-secondary text-secondary-content !w-full" data-canvas-target="checkBtn">Check</button>
     <button data-action="click->canvas#setCurrentQuestion" class="btn btn-secondary text-secondary-content !w-full hidden" data-canvas-target="nextBtn">Next Question</button>
+    <button class="btn btn-accent !w-full hidden" data-canvas-target="saveBtn" data-action="click->canvas#submitResult">Save Results
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+      </svg>
+    </button>
     <div class="w-full bg-base-300 rounded p-2 mt-6">
-      <div class="font-semibold">Accuracy: <span data-canvas-target="correctNum">0</span> out of <span data-canvas-target="totalNum">0</span></div>
+      <div class="font-semibold">Question: <span data-canvas-target="currentNum">1</span> out of <span>10</span></div>
       <div class="font-semibold">Percentage: <span data-canvas-target="percentage">--%</span></div>
       <progress class="progress progress-success w-full" value="100" max="100" data-canvas-target="progress"></progress>
-      <button class="btn btn-warning !w-full mt-8" data-canvas-target="nextBtn" data-action="click->canvas#submitResult">End Practice
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-        </svg>
-      </button>
     </div>
   </div>
   <label for="nothing-modal" class="hidden" data-canvas-target="modal"></label>

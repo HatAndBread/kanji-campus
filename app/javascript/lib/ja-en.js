@@ -1,49 +1,45 @@
-import {inflate} from "pako"
-import Dexie from "dexie";
-import axios from "axios";
 const url = "/dict/ja-en.json.gz"
 
-const db = new Dexie("kanji")
-
-
-db.version(1).stores({
-  kanji: "++id,kanji,english"
-});
-
-const parseData = (string) => {
-  return new Promise((resolve) => {
-    const worker = new Worker(`${window.location.origin}/dict-worker.js`);
-    worker.onmessage = (message) => {
-      resolve(message);
+const sentenceWorker = new Worker(`${window.location.origin}/sentences-worker.js`)
+sentenceWorker.postMessage({type: "import"})
+window.getSentences = (kanji) => {
+  return new Promise((resolve, reject) => {
+    sentenceWorker.onmessage = (message) => {
+      if (message.data === "ERROR") {
+        reject("Sentences called before ready")
+      } else {
+        resolve(message.data)
+      }
     }
-    worker.postMessage(string);
-  })
-}
-
-export const createDict = async () => {
-  const { data } = await axios.get(url, {
-    responseType: 'arraybuffer',
-    decompress: true,
+    sentenceWorker.postMessage({type: "get", kanji})
   });
-  const string = inflate(data, { to: 'string' });
-  const result = await parseData(string);
-  db.kanji.bulkPut(result.data).then(() => {
-    console.log("Kanji db ready")
-    window.db = db;
-  })
 }
 
-
-window.bulkLookup = (arrayOfKanji) => {
-  return new Promise((resolve) => {
-    db.kanji.where("kanji")
-      .anyOf(arrayOfKanji)
-      .toArray()
-      .then((res) => resolve(res))
-  })
+const kanjiWorker = new Worker(`${window.location.origin}/kanji-worker.js`)
+cue = []
+kanjiWorker.postMessage({type: "import"})
+window.lookup = (kanji) => {
+  return new Promise((resolve, reject) => {
+    kanjiWorker.onmessage = (message) => {
+      if (message.data === "ERROR") {
+        reject("Kanji lookup called before ready")
+      } else {
+        resolve(message.data)
+      }
+    }
+    kanjiWorker.postMessage({type: "get", kanji})
+  });
 }
 
-window.lookup = async (kanji) => {
-  const result = await db.kanji.get({kanji})
-  return result?.english
+window.bulkLookup = (kanji) => {
+  return new Promise((resolve, reject) => {
+    kanjiWorker.onmessage = (message) => {
+      if (message.data === "ERROR") {
+        reject("Kanji bulk lookup called before ready")
+      } else {
+        resolve(message.data)
+      }
+    }
+    kanjiWorker.postMessage({type: "getBulk", kanji})
+  })
 }
