@@ -8,8 +8,10 @@ Rails.application.routes.draw do
 
   resources :study_sets do
     resources :writing_sessions, only: [:index]
+    resources :reading_sessions, only: [:index]
   end
   resources :writing_sessions, only: [:update]
+  resources :reading_sessions, only: [:update]
   get "/privacy_policy", to: "pages#privacy_policy", as: "privacy_policy"
   get "/service-worker.js" => "service_worker#service_worker"
   get "/manifest.json" => "service_worker#manifest"

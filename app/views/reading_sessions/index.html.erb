@@ -1,0 +1,12 @@
+<h1 class="text-3xl font-bold text-center mt-8"> <%= @study_set.name %> </h1>
+
+<% current_rs = @reading_sessions.last %>
+<div data-controller="reading-sessions" class="flex flex-col items-center my-8" data-data="<%= @reading_sessions.map{ |rs| {created: rs.created_at.to_i, points: rs.points} }.to_json %>">
+  <div class="flex flex-col w-[90%] max-w-[800px] gap-8">
+    <div class="w-full bg-base-300 rounded p-6">
+      <%= link_to "Try again", study_set_path(@study_set, game_type: "reading"), class: "link link-secondary" %>
+      <div class="font-semibold">Points: <%= current_rs.points  %></div>
+    </div>
+    <canvas id="chart" data-reading-sessions-target="chartCanvas" class="bg-base-300 p-2 rounded"></canvas>
+  </div>
+</div>

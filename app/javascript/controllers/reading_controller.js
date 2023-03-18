@@ -10,10 +10,11 @@ const goodConfetti = [["🌈", "🦄", "🌸"], ["🌈"], ["🦄"], ["🌸"]]
 let failures = 0;
 
 export default class extends Controller {
-  static targets = ["mondai", "translation", "loader", "cardsContainer", "correctAnswer", "start", "next", "timer", "score"]
+  static targets = ["mondai", "translation", "loader", "cardsContainer", "correctAnswer", "start", "next", "timer", "score", "form", "points", "saveBtn", "replayBtn", "scoreboard"]
 
   connect() {
     this.mondais = JSON.parse(this.element.dataset.data)
+    this.user = !!parseInt(this.element.dataset.user)
     this.synth = window.speechSynthesis;
     this.score = 0;
     window.waitForReady().then(() => {
@@ -25,6 +26,7 @@ export default class extends Controller {
   updateScore(num) {
     this.score += num
     this.scoreTarget.innerText = this.score
+    if (this.user) this.pointsTarget.value = this.score
   }
 
   endGame() {
@@ -34,6 +36,18 @@ export default class extends Controller {
     this.translationTarget.innerHTML = ""
     this.correctAnswerTarget.innerHTML = ""
     this.nextTarget.classList.add("hidden")
+    this.scoreboardTarget.classList.remove("absolute")
+    this.scoreboardTarget.classList.add("text-3xl")
+    this.scoreboardTarget.classList.add("text-center")
+    if (this.user) {
+      this.saveBtnTarget.classList.remove("hidden")
+    } else {
+      this.replayBtnTarget.classList.remove("hidden")
+    }
+  }
+
+  replay() {
+    window.location.reload()
   }
 
   selectKanji(e) {
@@ -124,6 +138,7 @@ export default class extends Controller {
       }
       this.speak(japaneseSentence);
       failures = 0;
+      document.getElementById("anchor").scrollIntoView(true);
     } catch(e) {
       console.warn(e)
       if (failures < 10) {

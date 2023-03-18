@@ -7,7 +7,11 @@ class StudySetsController < ApplicationController
 
   def show
     @study_set = StudySet.includes(:mondais).find(params[:id])
-    @writing_session = WritingSession.create(user: current_user, study_set: @study_set) if current_user
+    if current_user && params["game_type"] == "reading"
+      @reading_session = ReadingSession.create(user: current_user, study_set: @study_set, points: 0)
+    else
+      @writing_session = WritingSession.create(user: current_user, study_set: @study_set)
+    end
   end
 
   def new

@@ -1,13 +1,13 @@
-<%= render "shared/sound" %>
-<div class="flex flex-col items-center p-4" data-controller="reading" data-data="<%= @study_set.mondais.to_json %>">
+<div id="anchor"></div>
+<div class="flex flex-col items-center p-4" data-controller="reading" data-data="<%= @study_set.mondais.to_json %>" data-user="<%= current_user ? 1 : 0%>">
+  <div class="absolute right-2" data-reading-target="scoreboard">
+    <span class="font-semibold">Score: 
+      <span data-reading-target="score" class="font-light">0</span>
+    </span>
+  </div>
   <span class="countdown font-mono text-6xl">
     <span style="--value:60;" data-reading-target="timer"></span>
   </span>
-  <div>
-    <span>Score: 
-      <span data-reading-target="score">0</span>
-    </span>
-  </div>
   <div class="fixed flex items-center justify-center top-0 left-0 w-screen h-screen bg-slate-800 opacity-50 z-50" data-reading-target="loader">
     <div class="loader"></div>
   </div>
@@ -19,5 +19,22 @@
   </div>
   <div data-reading-target="cardsContainer" class="flex flex-wrap justify-between"></div>
   <div class="text-8xl font-kanji text-center" data-reading-target="correctAnswer"></div>
-  <button class="btn btn-secondary hidden mt-4" data-action="click->reading#next text-center" data-reading-target="next">Next Question</button>
+  <button class="btn btn-secondary hidden mt-4" data-action="click->reading#next text-center" data-reading-target="next" type="button">Next Question</button>
+
+  <% if current_user %>
+  <%= form_with model: @reading_session, data: {reading_target: "form"}, class: "" do |form| %>
+    <%= form.number_field :points, data: {reading_target: "points"}, class: "hidden" %>
+    <button class="btn btn-accent !w-full hidden" data-reading-target="saveBtn">Save Results
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+      </svg>
+    </button>
+    <% end %>
+  <% else %>
+  <button class="btn btn-accent !w-full hidden" data-reading-target="replayBtn" data-action="click->reading#replay">Try Again
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+    </svg>
+  </button>
+<% end %>
 </div>

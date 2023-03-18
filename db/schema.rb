@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_14_221840) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_18_222418) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,6 +21,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_221840) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["study_set_id"], name: "index_mondais_on_study_set_id"
+  end
+
+  create_table "reading_sessions", force: :cascade do |t|
+    t.bigint "study_set_id", null: false
+    t.bigint "user_id", null: false
+    t.integer "points", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "completed", default: false
+    t.index ["study_set_id"], name: "index_reading_sessions_on_study_set_id"
+    t.index ["user_id"], name: "index_reading_sessions_on_user_id"
   end
 
   create_table "study_sets", force: :cascade do |t|
@@ -56,6 +67,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_14_221840) do
   end
 
   add_foreign_key "mondais", "study_sets"
+  add_foreign_key "reading_sessions", "study_sets"
+  add_foreign_key "reading_sessions", "users"
   add_foreign_key "study_sets", "users"
   add_foreign_key "writing_sessions", "study_sets"
   add_foreign_key "writing_sessions", "users"

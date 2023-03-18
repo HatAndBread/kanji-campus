@@ -1,5 +1,4 @@
 <div id="anchor"></div>
-<%= render "shared/sound" %>
 <div data-controller="canvas" class="min-h-screen" data-logged-in="<%= current_user ? "1" : "" %>">
   <div data-canvas-target="mondais" class="hidden">
     <% @study_set.mondais.each do |mondai| %>
