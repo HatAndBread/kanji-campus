@@ -9,6 +9,6 @@ class PagesController < ApplicationController
 
   def menu
     @study_sets = StudySet.where(public: true).order(name: :desc)
-    @pagy, @my_study_sets = pagy(StudySet.where(user: current_user), items: 8) if current_user
+    @pagy, @my_study_sets = pagy(StudySet.where(user: current_user).order(created_at: :desc), items: 8) if current_user
   end
 end

@@ -2,7 +2,7 @@ class StudySetsController < ApplicationController
   before_action :authenticate_user!, only: %i[index create edit update new destroy]
 
   def index
-    @pagy, @study_sets = pagy(StudySet.includes(:mondais).where(user: current_user), items: 8)
+    @pagy, @study_sets = pagy(StudySet.includes(:mondais).where(user: current_user).order(created_at: :desc), items: 8)
   end
 
   def show

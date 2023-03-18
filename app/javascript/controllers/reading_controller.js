@@ -94,7 +94,7 @@ export default class extends Controller {
       one.forEach((x, i) => {
         theWord.forEach((word) => {
           if (x[0] === -1 && x[1].match(word)) {
-            kanjis.push(x[1])
+            kanjis.push(x[1].match(word)[0])
             kanas.push(one[i + 1][1])
           }
         })
@@ -104,9 +104,9 @@ export default class extends Controller {
       }
       this.currentAnswer = kanjis.map((k) => k.split("")).flat()
       this.currentKanji = [...this.currentAnswer]
-      let shuffled = shuffle(this.allKanjis).slice(0, 10)
+      let shuffled = shuffle(this.allKanjis).slice(0, 10).filter((k) => !this.currentKanji.join("").split("").includes(k))
       this.currentAnswer.forEach((a) => shuffled.push(a))
-      shuffled = uniq(shuffle(shuffled))
+      shuffled = shuffle(shuffled)
       for (let i = 0; i < shuffled.length; i++) {
         const btn = document.createElement("button")
         btn.innerText = shuffled[i]
