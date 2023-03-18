@@ -1,0 +1,23 @@
+<%= render "shared/sound" %>
+<div class="flex flex-col items-center p-4" data-controller="reading" data-data="<%= @study_set.mondais.to_json %>">
+  <span class="countdown font-mono text-6xl">
+    <span style="--value:60;" data-reading-target="timer"></span>
+  </span>
+  <div>
+    <span>Score: 
+      <span data-reading-target="score">0</span>
+    </span>
+  </div>
+  <div class="fixed flex items-center justify-center top-0 left-0 w-screen h-screen bg-slate-800 opacity-50 z-50" data-reading-target="loader">
+    <div class="loader"></div>
+  </div>
+  <div class="text-3xl" data-reading-target="mondai"></div>
+  <div class="text-3xl" data-reading-target="translation"></div>
+  <div class="w-[90vw] max-w-[600px] rounded bg-base-200 p-4 flex flex-col items-center gap-4 mt-8" data-reading-target="start">
+    <p>Touch every missing kanji in order as fast as you can.</p>
+    <button class="btn btn-secondary" data-action="click->reading#next" data-btn="start">Start</button>
+  </div>
+  <div data-reading-target="cardsContainer" class="flex flex-wrap justify-between"></div>
+  <div class="text-8xl font-kanji text-center" data-reading-target="correctAnswer"></div>
+  <button class="btn btn-secondary hidden mt-4" data-action="click->reading#next text-center" data-reading-target="next">Next Question</button>
+</div>

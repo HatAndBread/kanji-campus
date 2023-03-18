@@ -47,14 +47,17 @@ export default class extends Controller {
         this.maruTarget.classList.add("opacity-100")
         this.setAnswerDisplay(d[0], "🙆‍♀️✨")
         this.correctlyAnswered += 1
+        window.playSound("correct")
         this.jsConfetti.addConfetti({
           emojis: sample(goodConfetti),
         })
       } else if (d.includes(this.answer)) {
+        window.playSound("wrong")
         this.sankakuTarget.classList.add("opacity-100")
         this.setAnswerDisplay(d[0], "🤷‍♀️")
         this.markCorrectTarget.classList.remove("hidden")
       } else {
+        window.playSound("wrong")
         this.batsuTarget.classList.add("opacity-100")
         this.setAnswerDisplay(d[0], "🙅‍♀️")
         this.markCorrectTarget.classList.remove("hidden")
@@ -168,6 +171,7 @@ export default class extends Controller {
     this.jsConfetti.addConfetti({
       emojis: sample(goodConfetti),
     })
+    window.playSound("correct")
     this.userAnswerDisplayTarget.classList.add("hidden")
     this.markCorrectTarget.classList.add("hidden")
   }

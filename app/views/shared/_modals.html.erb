@@ -20,3 +20,15 @@
     </div>
   </div>
 </div>
+
+<label for="reading-modal" class="btn hidden" id="open-reading-modal"></label>
+<input type="checkbox" id="reading-modal" class="modal-toggle" />
+<div class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Error</h3>
+    <p class="py-4">This game cannot be played with this study set. Make sure it contains at least 10 kanji.</p>
+    <div class="modal-action">
+      <%= link_to "ok", root_path, class: "btn btn-warning" %>
+    </div>
+  </div>
+</div>

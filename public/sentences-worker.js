@@ -35,7 +35,7 @@ onmessage = function (event) {
   switch (event.data.type) {
     case "import": {
       fetchJSONFromGZFile().then((res) => {
-        console.log("Sentences ready")
+        this.postMessage("ready")
       });
       break;
     }

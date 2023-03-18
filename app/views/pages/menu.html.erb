@@ -1,3 +1,4 @@
+<% game_type = params[:game_type] || "writing" %>
 <div class="flex flex-col items-center gap-4 my-8">
   <h1 class="text-3xl font-bold">Select A Study Set</h1>
   <% if current_user %>
@@ -11,11 +12,14 @@
         <tbody>
           <% @my_study_sets.each do |ss| %>
             <tr>
-              <td><%= link_to ss.name.truncate(30), study_set_path(ss), class: "link link-accent text-accent" %></td>
+              <td><%= link_to ss.name.truncate(30), study_set_path(ss, game_type:), class: "link link-accent text-accent" %></td>
             </tr>
           <% end %>
         </tbody>
       </table>
+      <div class="full flex justify-center mt-4">
+        <%== pagy_nav(@pagy) %>
+      </div>
     </div>
   <% end %>
   <div class="overflow-x-auto w-[90%] max-w-[800px] border border-base-300 rounded-lg mb-8">
@@ -28,7 +32,7 @@
       <tbody>
         <% @study_sets.each do |ss| %>
           <tr>
-            <td><%= link_to ss.name.truncate(30), study_set_path(ss), class: "link link-accent text-accent" %></td>
+            <td><%= link_to ss.name.truncate(30), study_set_path(ss, game_type:), class: "link link-accent text-accent" %></td>
           </tr>
         <% end %>
       </tbody>

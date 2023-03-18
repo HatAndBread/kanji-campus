@@ -35,7 +35,7 @@ onmessage = function (event) {
   switch (event.data.type) {
     case "import": {
       fetchJSONFromGZFile().then(() => {
-        console.log("Kanjis ready")
+        this.postMessage("ready")
       });
       break;
     }

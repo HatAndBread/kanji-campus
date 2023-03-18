@@ -25,7 +25,9 @@ const FILES_TO_CACHE = [
   "kuroshiro.js",
   "kuroshiro-analyzer.js",
   "dict-worker.js",
-  "pako_inflate.min.js"
+  "pako_inflate.min.js",
+  "correct.mp3",
+  "wrong.mp3"
 ];
 
 self.addEventListener("install", async () => {

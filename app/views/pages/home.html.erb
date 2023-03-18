@@ -4,12 +4,12 @@
 </div>
   <h2 class="text-7xl sm:text-8xl md:text-9xl lg:text-9xl font-kanji w-full text-center">何をしますか？</h2>
 <div class="flex flex-col items-center mx-auto max-w-[400px] w-[90%] my-8 gap-4">
-  <%= link_to "Practice Writing", menu_path, class: "btn btn-primary w-full" %>
-  <%= link_to "Practice Reading", menu_path, class: "btn btn-primary w-full" %>
+  <%= link_to "Practice Writing", menu_path(game_type: "writing"), class: "btn btn-primary w-full" %>
+  <%= link_to "Practice Reading", menu_path(game_type: "reading"), class: "btn btn-primary w-full" %>
   <%= link_to "Dictionary", menu_path, class: "btn btn-primary w-full" %>
 </div>
 <% unless current_user %>
-  <div class="flex flex-col items-center gap-4 mt-4">
+  <div class="flex flex-col items-center gap-4 mt-12 mb-32">
     <h2 class="font-bold text-3xl">Not signed up yet?</h2>
     <p class="w-[90%] max-w-[300px] text-sm leading-6 text-gray-600 line-clamp-3">
       Signing up allows you to create your own study sets, search for other user's study sets, and more!

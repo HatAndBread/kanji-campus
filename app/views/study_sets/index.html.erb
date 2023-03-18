@@ -8,7 +8,11 @@
       <ul role="list" class="divide-y divide-base-300">
         <% @study_sets.each do |ss| %>
           <li class="px-6 py-4 bg-base-100 hover:bg-base-200 flex justify-between transition">
-            <%= link_to ss.name, study_set_path(ss.id), class: "link link-accent"%>
+            <div>
+              <div class="font-semibold"><%= ss.name %></div>
+              <%= link_to "Writing", study_set_path(ss.id), class: "link link-accent"%>
+              <%= link_to "Reading", study_set_path(ss.id, {game_type: "reading"}), class: "link link-accent"%>
+            </div>
             <div class="flex gap-6">
               <%= link_to edit_study_set_path(ss) do %>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
