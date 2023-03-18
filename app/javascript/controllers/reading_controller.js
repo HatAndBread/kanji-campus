@@ -100,6 +100,7 @@ export default class extends Controller {
         })
       })
       for (let i = 0; i < kanjis.length; i++) {
+        if (!furigana.match(kanjis[i])) throw new Error("Furigana not matching")
         furigana = furigana.replace(kanjis[i], `<u class="text-secondary">${kanas[i].split("").map(x => `&nbsp;&nbsp;&nbsp;`).join("")}</u>`)
       }
       this.currentAnswer = kanjis.map((k) => k.split("")).flat()
