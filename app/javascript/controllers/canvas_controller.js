@@ -156,7 +156,7 @@ export default class extends Controller {
 
   submitResult() {
     if (!this.element.dataset.loggedIn) {
-      window.location.assign("/");
+      window.location.reload()
       return;
     }
 
