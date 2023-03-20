@@ -25,9 +25,9 @@ Rails.application.configure do
   config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
   # Added by me. Enable caching?
-  config.public_file_server.headers = {
-    "Cache-Control" => "public, max-age=#{1.year.to_i}"
-  }
+  # config.public_file_server.headers = {
+  #   "Cache-Control" => "public, max-age=#{1.year.to_i}"
+  # }
 
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
