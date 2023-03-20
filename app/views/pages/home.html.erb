@@ -1,8 +1,10 @@
 <div class="flex flex-col items-center gap-4 mt-4">
-  <h1 class="text-5xl font-bold text-center">Kanji College</h1>
+  <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-center">Kanji College</h1>
   <%= image_tag "logo.webp", alt: "logo", class: "rounded-full max-w-[200px] w-[40%] overflow-hidden" %>
 </div>
-  <h2 class="text-7xl sm:text-8xl md:text-9xl lg:text-9xl font-kanji w-full text-center">何をしますか？</h2>
+  <h2 class="text-2xl sm:text-3xl w-full text-center mt-8">
+    <ruby>今日<rp>(</rp><rt>きょう</rt><rp>)</rp></ruby>は<ruby>何<rp>(</rp><rt>なに</rt><rp>)</rp></ruby>を<ruby>勉強<rp>(</rp><rt>べんきょう</rt><rp>)</rp></ruby>しますか？
+  </h2>
 <div class="flex flex-col items-center mx-auto max-w-[400px] w-[90%] my-8 gap-4">
   <%= link_to "Practice Writing", menu_path(game_type: "writing"), class: "btn btn-primary w-full" %>
   <%= link_to "Practice Reading", menu_path(game_type: "reading"), class: "btn btn-primary w-full" %>
@@ -11,10 +13,10 @@
   <% end %>
 </div>
 <% unless current_user %>
-  <div class="flex flex-col items-center gap-4 mt-12 mb-32">
+  <div class="flex flex-col items-center gap-6 mt-12 mb-32">
     <h2 class="font-bold text-3xl">Not signed up yet?</h2>
-    <p class="w-[90%] max-w-[300px] text-sm leading-6 text-gray-600 line-clamp-3">
-      Signing up allows you to create and save your own study sets!
+    <p class="w-[90%] max-w-[400px] text-sm leading-6 text-gray-600 line-clamp-3">
+      Signing up allows you to create and save your own study sets, track your progress and more!
     </p>
     <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-secondary text-secondary-content w-[90%] max-w-[300px]" %>
     <%= link_to "Sign In", new_user_session_path, class: "link link-accent" %>
