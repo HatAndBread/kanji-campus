@@ -39,6 +39,21 @@ window.lookup = (kanji) => {
   });
 }
 
+window.englishLookup = (english) => {
+  if (!window.kanjiReady) return;
+
+  return new Promise((resolve, reject) => {
+    kanjiWorker.onmessage = (message) => {
+      if (message.data === "ERROR") {
+        reject("word lookup called before ready")
+      } else {
+        resolve(message.data)
+      }
+    }
+    kanjiWorker.postMessage({type: "getFromEnglish", english})
+  });
+}
+
 window.bulkLookup = (kanji) => {
   return new Promise((resolve, reject) => {
     kanjiWorker.onmessage = (message) => {

@@ -77,6 +77,23 @@ onmessage = function (event) {
       this.postMessage(result)
       break;
     }
+    case "getFromEnglish": {
+      if (!kanjis) {
+        this.postMessage("ERROR")
+        break;
+      }
+      const results = []
+      const english = event.data.english
+      for (let i = 0; i < kanjis.length; i++) {
+        for (let j = 0; j < kanjis[i].sense.length; j++) {
+          const o = kanjis[i].sense[j]
+          const item = o.gloss?.find((x) => x.text === english)
+          if (item) results.push(kanjis[i])
+        }
+      }
+      this.postMessage(results)
+      break;
+    }
     default: {
       console.error(`Unhandled message type: ${event.data.type}`)
     }
