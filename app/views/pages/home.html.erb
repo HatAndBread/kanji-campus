@@ -1,6 +1,6 @@
 <div class="flex flex-col items-center gap-4 mt-4">
   <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-center">Kanji College</h1>
-  <%= image_tag "logo.webp", alt: "logo", class: "rounded-full max-w-[200px] w-[40%] overflow-hidden" %>
+  <%= image_tag "logo.webp", alt: "logo", class: "rounded-full max-w-[200px] w-[40%] overflow-hidden", width: "200", height: "200" %>
 </div>
   <h2 class="text-2xl sm:text-3xl w-full text-center mt-8">
     <ruby>今日<rp>(</rp><rt>きょう</rt><rp>)</rp></ruby>は<ruby>何<rp>(</rp><rt>なに</rt><rp>)</rp></ruby>を<ruby>勉強<rp>(</rp><rt>べんきょう</rt><rp>)</rp></ruby>しますか？
@@ -15,7 +15,7 @@
 <% unless current_user %>
   <div class="flex flex-col items-center gap-6 mt-12 mb-32">
     <h2 class="font-bold text-3xl">Not signed up yet?</h2>
-    <p class="w-[90%] max-w-[400px] text-sm leading-6 text-gray-600 line-clamp-3">
+    <p class="w-[90%] max-w-[400px] text-sm leading-6 line-clamp-3">
       Signing up allows you to create and save your own study sets, track your progress and more!
     </p>
     <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-secondary text-secondary-content w-[90%] max-w-[300px]" %>
