@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   end
   resources :writing_sessions, only: [:update]
   resources :reading_sessions, only: [:update]
+
   get "/privacy_policy", to: "pages#privacy_policy", as: "privacy_policy"
   get "/service-worker.js" => "service_worker#service_worker"
   get "/manifest.json" => "service_worker#manifest"

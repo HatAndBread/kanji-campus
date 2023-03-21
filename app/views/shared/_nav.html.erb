@@ -17,6 +17,7 @@
           <li><%= link_to "My Study Sets", study_sets_path %></li>
           <li><%= link_to "New Study Set", new_study_set_path %></li>
           <% if current_user %>
+            <li><%= link_to "My Account", edit_user_registration_path %></li>
             <li><%= button_to "Logout", destroy_user_session_path, method: :delete%></li>
           <% end %>
           <% unless current_user %>
