@@ -38,7 +38,7 @@ class StudySetsController < ApplicationController
     @study_set = StudySet.find(params[:id])
     @study_set.mondais.destroy_all
     if @study_set.update(study_set_params)
-      flash[:notice] = "Successfully updated new study set"
+      flash[:notice] = "Successfully updated #{@study_set.name}"
       redirect_to action: "show", id: @study_set
     else
       flash.now[:alert] = "There was a problem saving this study set. #{@study_set.errors}"
