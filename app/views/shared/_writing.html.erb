@@ -39,6 +39,7 @@
     <div class="flex md:justify-between flex-col items-start md:flex-row">
       <div data-canvas-target="userAnswerDisplay" class="hidden text-lg md:text-2xl"></div>
       <button class="link link-secondary mb-4" data-canvas-target="markCorrect" data-action="click->canvas#markCorrect">Mark as correct</button>
+      <button class="link link-secondary mb-4" data-canvas-target="markWrong" data-action="click->canvas#markWrong">Mark as wrong</button>
     </div>
     <button data-action="click->canvas#recognize" class="btn btn-secondary text-secondary-content !w-full" data-canvas-target="checkBtn">Check</button>
     <button data-action="click->canvas#setCurrentQuestion" class="btn btn-secondary text-secondary-content !w-full hidden" data-canvas-target="nextBtn">Next Question</button>

@@ -9,7 +9,7 @@ const goodConfetti = [["🌈", "🦄", "🌸"], ["🌈"], ["🦄"], ["🌸"]]
 const LIMIT = 10
 let listeners = []
 export default class extends Controller {
-  static targets = ["form", "formAnswered", "formCorrect", "canvas", "mondais", "currentQuestion", "userAnswerDisplay", "maru", "sankaku", "batsu", "checkBtn", "nextBtn", "saveBtn", "skipBtn", "stroke", "modal", "loader", "currentNum", "percentage", "progress", "markCorrect"]
+  static targets = ["form", "formAnswered", "formCorrect", "canvas", "mondais", "currentQuestion", "userAnswerDisplay", "maru", "sankaku", "batsu", "checkBtn", "nextBtn", "saveBtn", "skipBtn", "stroke", "modal", "loader", "currentNum", "percentage", "progress", "markCorrect", "markWrong"]
 
   connect() {
     this.jsConfetti = new JSConfetti()
@@ -48,6 +48,7 @@ export default class extends Controller {
         this.setAnswerDisplay(d[0], "🙆‍♀️✨")
         this.correctlyAnswered += 1
         window.playSound("correct")
+        this.markWrongTarget.classList.remove("hidden")
         this.jsConfetti.addConfetti({
           emojis: sample(goodConfetti),
         })
@@ -126,6 +127,7 @@ export default class extends Controller {
       this.userAnswerDisplayTarget.innerText = ""
       this.userAnswerDisplayTarget.classList.add("hidden")
       this.markCorrectTarget.classList.add("hidden")
+      this.markWrongTarget.classList.add("hidden")
       return
     }
     this.userAnswerDisplayTarget.innerHTML = `It looks like you wrote: <strong>${text}</strong>  ${emoji}`
@@ -174,5 +176,13 @@ export default class extends Controller {
     window.playSound("correct")
     this.userAnswerDisplayTarget.classList.add("hidden")
     this.markCorrectTarget.classList.add("hidden")
+  }
+
+  markWrong() {
+    this.correctlyAnswered -= 1
+    this.updateQuestionNumber()
+    window.playSound("wrong")
+    this.userAnswerDisplayTarget.classList.add("hidden")
+    this.markWrongTarget.classList.add("hidden")
   }
 }
